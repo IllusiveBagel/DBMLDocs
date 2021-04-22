@@ -1,0 +1,23 @@
+Project Example {
+    database_type: 'SQL Server'
+    Note: '''
+        # Example
+        This is a Database
+    '''
+}
+
+Table Users {
+    id int [primary key, not null]
+    username varchar
+
+    Note: 'This is the User Table'
+}
+
+Table Posts {
+    id int [primary key, not null]
+    user_id int
+
+    Note: 'This is the Posts Table'
+}
+
+Ref UserPosts: Posts.user_id > Users.id
