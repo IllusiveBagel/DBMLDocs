@@ -2,13 +2,16 @@ import createStyles from "@material-ui/core/styles/createStyles";
 import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Theme, WithStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 
 const styles = (theme: Theme) => createStyles({
 
 });
 
 interface IDatabaseProps extends WithStyles<typeof styles> {
-
+    Project: string;
+    DBType: string;
+    Note: string;
 }
 
 interface IDatabaseState {
@@ -25,7 +28,14 @@ class Database extends React.Component<IDatabaseProps, IDatabaseState> {
 
     render() {
         return (
-            <div></div>
+            <>
+                <Typography variant="h2">
+                    {this.props.Project}
+                </Typography>
+                <Typography>
+                    Database Type: {this.props.DBType}
+                </Typography>
+            </>
         );
     }
 }
