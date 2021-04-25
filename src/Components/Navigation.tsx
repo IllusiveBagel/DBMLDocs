@@ -19,6 +19,7 @@ import Typography from "@material-ui/core/Typography";
 import WebAssetIcon from "@material-ui/icons/WebAsset";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
+import { Table } from "../Lib/Declarations";
 import { Theme, WithStyles } from "@material-ui/core/styles";
 
 const drawerWidth = 220;
@@ -41,7 +42,7 @@ const styles = (theme: Theme) => createStyles({
 });
 
 interface INavigationProps extends WithStyles<typeof styles>, RouteComponentProps {
-
+    Tables: Table[];
 }
 
 interface INavigationState {
@@ -110,21 +111,15 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
                         />
                     </FormControl>
                     <List component="nav" dense>
-                        <ListItemLink
-                            to="/"
-                            primary="Table Name"
-                            icon={<WebAssetIcon />}
-                        />
-                        <ListItemLink
-                            to="/"
-                            primary="Table Name"
-                            icon={<WebAssetIcon />}
-                        />
-                        <ListItemLink
-                            to="/"
-                            primary="Table Name"
-                            icon={<WebAssetIcon />}
-                        />
+                        {this.props.Tables.map(table => {
+                            return (
+                                <ListItemLink
+                                    to={"/" + table.Name}
+                                    primary={table.Name}
+                                    icon={<WebAssetIcon />}
+                                />
+                            );
+                        })}
                     </List>
                 </Drawer>
             </>

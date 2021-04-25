@@ -1,9 +1,10 @@
+import Database from "./Pages/Database";
 import Layout from "./Components/Layout";
 import React from "react";
-import { Route } from "react-router";
-import { DBML2JSON } from "./Lib/DBMLLib";
+import Table from "./Pages/Table";
 import { DBML } from "./Lib/Declarations";
-import Database from "./Pages/Database";
+import { DBML2JSON } from "./Lib/DBMLLib";
+import { Route } from "react-router";
 
 interface IAppProps {
 
@@ -11,6 +12,7 @@ interface IAppProps {
 
 interface IAppState {
   Json: DBML;
+  HasData: boolean;
 }
 
 export default class App extends React.Component<IAppProps, IAppState> {
@@ -20,6 +22,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
     super(props);
     this.state={
       Json: {} as DBML,
+      HasData: false,
     };
   }
 
@@ -38,16 +41,29 @@ export default class App extends React.Component<IAppProps, IAppState> {
 
     this.setState({
       Json: Json,
+      HasData: true,
     })
   }
 
   render () {
-    console.log(this.state.Json);
+    if (this.state.HasData === false){
+      return(
+        <h1>No Data</h1>
+      );
+    }
+
     return (
-      <Layout>
+      <Layout Tables={this.state.Json.Tables}>
         <Route exact path='/'>
           <Database Project={this.state.Json.Project} DBType={this.state.Json.database_type} Note={this.state.Json.Note} />
         </Route>
+        {this.state.Json.Tables.map(table => {
+          return(
+            <Route path={"/" + table.Name}>
+              <Table Name={table.Name} Note={table.Note} />
+            </Route>
+          );
+        })}
       </Layout>
     );
   }
