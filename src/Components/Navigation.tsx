@@ -38,10 +38,15 @@ const styles = (theme: Theme) => createStyles({
     toolbar: theme.mixins.toolbar,
     search: {
         margin: "16px 8px 8px"
+    },
+    title: {
+        textDecoration: "none",
+        color: "inherit"
     }
 });
 
 interface INavigationProps extends WithStyles<typeof styles>, RouteComponentProps {
+    DBName: string;
     Tables: Table[];
 }
 
@@ -84,8 +89,8 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
                         <IconButton>
                             <StorageIcon />
                         </IconButton>
-                        <Typography variant="h6" noWrap>
-                            DBML Docs
+                        <Typography variant="h6" noWrap component={Link} to="/" className={classes.title}>
+                            {this.props.DBName}
                         </Typography>
                     </Toolbar>
                 </AppBar>

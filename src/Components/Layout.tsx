@@ -26,6 +26,7 @@ const darkTheme = createMuiTheme({
 
 interface ILayoutProps extends WithStyles<typeof styles> {
     Tables: Table[];
+    DBName: string;
 }
 
 interface ILayoutState {
@@ -47,7 +48,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
             <ThemeProvider theme={darkTheme}>
                 <div className={classes.root}>
                     <CssBaseline />
-                    <Navigation Tables={this.props.Tables} />
+                    <Navigation Tables={this.props.Tables} DBName={this.props.DBName} />
                     <main className={classes.content}>
                         <div className={classes.toolbar} />
                         {this.props.children}

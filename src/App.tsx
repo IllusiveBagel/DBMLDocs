@@ -68,7 +68,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
         }
 
         return (
-            <Layout Tables={this.state.Json.Tables}>
+            <Layout Tables={this.state.Json.Tables} DBName={this.state.Json.Project}>
                 <Route exact path='/'>
                     <Database
                         Project={this.state.Json.Project}
