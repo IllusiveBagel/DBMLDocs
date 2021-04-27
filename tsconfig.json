@@ -21,8 +21,6 @@
     "jsx": "react-jsx",
   },
   "include": [
-    "src",
-    "Types",
-    "src/Example.dbml"
+    "src"
   ]
 }
