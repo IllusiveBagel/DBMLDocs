@@ -22,3 +22,5 @@ Replace Example.dbml in the ```public/Database``` folder with your dbml file the
 | Note Definition       | :heavy_check_mark:      | Full Mardown Support of Project Note |
 | Enum Definition       | :x:                     |                                      |
 | Table Groups          | :x:                     |                                      |
+
+[DBML Documentation](https://www.dbml.org/docs)
