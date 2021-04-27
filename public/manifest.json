@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "DBML Docs",
+  "name": "A Standalone Site for Displaying Database Documentation Based on DBML Files",
   "icons": [
     {
       "src": "favicon.ico",

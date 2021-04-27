@@ -2,8 +2,9 @@
 A Standalone Site for Displaying Database Documentation Based on DBML Files
 
 ### How to Use
-Replace Example.dbml in the ```public/Database``` folder with your dbml file then run 
-```npm start```
+1. Replace Example.dbml in the ```public/Database``` folder with your dbml file. 
+2. change the DatabaseName field in ```src/config.json``` to the name of your dbml file.
+3. Run ```npm start```
 
 ### Supported Features
 | Feature               | Supported               | Notes                                |

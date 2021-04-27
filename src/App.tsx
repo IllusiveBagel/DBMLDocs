@@ -5,6 +5,7 @@ import Table from "./Pages/Table";
 import { DBML, Reference } from "./Lib/Declarations";
 import { DBML2JSON } from "./Lib/DBMLLib";
 import { Route } from "react-router";
+import config from "./config.json";
 
 interface IAppProps {
 
@@ -31,7 +32,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
     }
 
     public async GetData() {
-        const Data = await fetch('/Database/Example.dbml')
+        const Data = await fetch(`/Database/${config.DatabaseName}.dbml`)
         .then((r) => r.text())
         .then(text  => {
             return text.toString();
