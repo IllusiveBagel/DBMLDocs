@@ -11,11 +11,13 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import { Table as MaterialTable } from "@material-ui/core";
 import { Theme, WithStyles } from "@material-ui/core/styles";
 import TableBody from "@material-ui/core/TableBody";
-import { Column } from "../Lib/Declarations";
+import { Column, Reference } from "../Lib/Declarations";
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import Chip from "@material-ui/core/Chip";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
+import CallSplitIcon from '@material-ui/icons/CallSplit';
+import HeightIcon from '@material-ui/icons/Height';
 
 const styles = (theme: Theme) => createStyles({
     Note: {
@@ -23,6 +25,15 @@ const styles = (theme: Theme) => createStyles({
     },
     Chip: {
         marginRight: "5px"
+    },
+    GreaterThan: {
+        transform: "rotate(270deg)"
+    },
+    LessThan: {
+        transform: "rotate(90deg)"
+    },
+    OneToOne: {
+        transform: "rotate(90deg)"
     }
 });
 
@@ -30,6 +41,7 @@ interface ITableProps extends WithStyles<typeof styles> {
     Name: string;
     Columns: Column[];
     Note: string;
+    References: Reference[];
 }
 
 interface ITableState {
@@ -90,12 +102,12 @@ class Table extends React.Component<ITableProps, ITableState> {
                             <MaterialTable>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell align="center">Column</TableCell>
-                                        <TableCell align="center">Type</TableCell>
-                                        <TableCell align="center">Settings</TableCell>
-                                        <TableCell align="center">References</TableCell>
-                                        <TableCell align="center">Default Value</TableCell>
-                                        <TableCell align="center">Note</TableCell>
+                                        <TableCell align="center" width="16.6%">Column</TableCell>
+                                        <TableCell align="center" width="16.6%">Type</TableCell>
+                                        <TableCell align="center" width="16.6%">Settings</TableCell>
+                                        <TableCell align="center" width="16.6%">References</TableCell>
+                                        <TableCell align="center" width="16.6%">Default Value</TableCell>
+                                        <TableCell align="center" width="16.6%">Note</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -118,7 +130,49 @@ class Table extends React.Component<ITableProps, ITableState> {
                                                             }
                                                         })}
                                                     </TableCell>
-                                                    <TableCell align="center"></TableCell>
+                                                    <TableCell align="center">
+                                                        <Grid container direction="row" justify="center">
+                                                           {this.props.References.map(ref => {
+                                                                if (ref.Type === "-") {
+                                                                    return (
+                                                                        <>
+                                                                            <Grid item xs={2}>
+                                                                                <HeightIcon className={classes.OneToOne} />
+                                                                            </Grid>
+                                                                            <Grid item xs={8}>
+                                                                                <Typography>{`${ref.Secondary.Table}.${ref.Secondary.Column}`}</Typography>
+                                                                            </Grid>
+                                                                        </>
+                                                                    );
+                                                                } else if (ref.Primary.Table === this.props.Name && ref.Primary.Column === column.Name) {
+                                                                    return (
+                                                                        <>
+                                                                            <Grid item xs={2}>
+                                                                                <CallSplitIcon className={classes.GreaterThan} />
+                                                                            </Grid>
+                                                                            <Grid item xs={8}>
+                                                                                <Typography>{`${ref.Secondary.Table}.${ref.Secondary.Column}`}</Typography>
+                                                                            </Grid>
+                                                                        </>
+                                                                    );
+                                                                } else if (ref.Secondary.Table === this.props.Name && ref.Secondary.Column === column.Name) {
+                                                                    return (
+                                                                        <>
+                                                                            <Grid item xs={2}>
+                                                                                <CallSplitIcon className={classes.LessThan} />
+                                                                            </Grid>
+                                                                            <Grid item xs={8}>
+                                                                                <Typography>{`${ref.Primary.Table}.${ref.Primary.Column}`}</Typography>
+                                                                            </Grid>
+                                                                        </>
+                                                                    )
+                                                                } else {
+                                                                    return null;
+                                                                }
+                                                            })} 
+                                                        </Grid>
+                                                        
+                                                    </TableCell>
                                                     <TableCell align="center">{column.Default}</TableCell>
                                                     <TableCell align="center">{column.Note}</TableCell>
                                                 </TableRow>

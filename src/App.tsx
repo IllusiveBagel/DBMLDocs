@@ -2,7 +2,7 @@ import Database from "./Pages/Database";
 import Layout from "./Components/Layout";
 import React from "react";
 import Table from "./Pages/Table";
-import { DBML } from "./Lib/Declarations";
+import { DBML, Reference } from "./Lib/Declarations";
 import { DBML2JSON } from "./Lib/DBMLLib";
 import { Route } from "react-router";
 
@@ -45,6 +45,20 @@ export default class App extends React.Component<IAppProps, IAppState> {
         })
     }
 
+    public GetReferences(tableName: string, References: Reference[]): Reference[] {
+        var refs: Reference[] = [];
+
+        if (References !== undefined) {
+            References.forEach(ref => {
+                if (ref.Primary.Table === tableName || ref.Secondary.Table === tableName) {
+                    refs.push(ref);
+                }
+            });
+        }
+
+        return refs;
+    }
+
     render () {
         if (this.state.HasData === false) {
             return(
@@ -60,15 +74,18 @@ export default class App extends React.Component<IAppProps, IAppState> {
                         DBType={this.state.Json.database_type}
                         Tables={this.state.Json.Tables}
                         Note={this.state.Json.Note}
+                        References={this.state.Json.References}
+                        GetReferences={this.GetReferences}
                     />
                 </Route>
-                {this.state.Json.Tables.map(table => {
+                {this.state.Json.Tables.map((table, index) => {
                     return(
-                        <Route path={"/" + table.Name}>
+                        <Route path={"/" + table.Name} key={index}>
                             <Table
                                 Name={table.Name}
                                 Columns={table.Columns}
                                 Note={table.Note}
+                                References={this.GetReferences(table.Name, this.state.Json.References)}
                             />
                         </Route>
                     );

@@ -46,7 +46,7 @@ interface INavigationProps extends WithStyles<typeof styles>, RouteComponentProp
 }
 
 interface INavigationState {
-    
+    Search: string;
 }
 
 class Navigation extends React.Component<INavigationProps, INavigationState> {
@@ -54,7 +54,9 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
 
     constructor(props: any) {
         super(props);
-        this.state={};
+        this.state={
+            Search: ""
+        };
     }
 
     render() {
@@ -102,6 +104,9 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
                         <OutlinedInput
                             id="search-input"
                             label="Search"
+                            onChange={(event) => this.setState({
+                                Search: event.target.value
+                            })}
                             startAdornment={
                                 <InputAdornment position="start">
                                     <SearchIcon />
@@ -110,12 +115,13 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
                         />
                     </FormControl>
                     <List component="nav" dense>
-                        {this.props.Tables.map(table => {
+                        {this.props.Tables.filter(x => x.Name.toLowerCase().includes(this.state.Search.toLowerCase())).map((table, index) => {
                             return (
                                 <ListItemLink
                                     to={"/" + table.Name}
                                     primary={table.Name}
                                     icon={<WebAssetIcon />}
+                                    key={index}
                                 />
                             );
                         })}

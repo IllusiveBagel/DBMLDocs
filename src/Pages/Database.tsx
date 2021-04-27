@@ -15,11 +15,13 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
-import { Table } from "../Lib/Declarations";
+import { Reference, Table } from "../Lib/Declarations";
 import { Link } from "react-router-dom";
 import { Link as MaterialLink } from "@material-ui/core";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
+
+type GetReferences = (tableName: string, References: Reference[]) => Reference[];
 
 const styles = (theme: Theme) => createStyles({
     Note: {
@@ -32,6 +34,8 @@ interface IDatabaseProps extends WithStyles<typeof styles> {
     DBType: string;
     Tables: Table[];
     Note: string;
+    References: Reference[];
+    GetReferences: GetReferences;
 }
 
 interface IDatabaseState {
@@ -106,7 +110,9 @@ class Database extends React.Component<IDatabaseProps, IDatabaseState> {
                                                         <Link to={"/" + table.Name} component={MaterialLink} color="inherit">{table.Name}</Link>
                                                     </TableCell>
                                                     <TableCell align="center">{table.Columns.length}</TableCell>
-                                                    <TableCell align="center"></TableCell>
+                                                    <TableCell align="center">
+                                                        {this.props.GetReferences(table.Name, this.props.References).length}
+                                                    </TableCell>
                                                     <TableCell align="center">{table.Note}</TableCell>
                                                 </TableRow>
                                             );
