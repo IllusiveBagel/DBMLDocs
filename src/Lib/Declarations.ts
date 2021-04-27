@@ -32,4 +32,4 @@ export interface ReferenceConnection {
     Column: string;
 }
 
-type ConnectionType = ">" | "<" | "-";
+export type ConnectionType = ">" | "<" | "-";

@@ -1,4 +1,4 @@
-import { Column, DBML, Table } from "./Declarations";
+import { Column, ConnectionType, DBML, Reference, Table } from "./Declarations";
 
 // TODO
 // This can be more efficient
@@ -42,6 +42,29 @@ export function DBML2JSON(dbml: string): DBML {
 
         tables.push(table);
     });
+
+    let refs: Reference[] = [];
+    var refsIn = dbml.match(/(?<=Ref .*: ).*\w/g) as string[];
+    var refNames = dbml.match(/(?<=Ref ).+?(?=:)/g) as string[];
+
+    refsIn.forEach((refIn, index) => {
+        var refArray = refIn.split(' ');
+        var ref: Reference = {
+            Name: refNames[index],
+            Primary: {
+                Table: refArray[0].split('.')[0],
+                Column: refArray[0].split('.')[1]
+            },
+            Type: refArray[1].toString() as ConnectionType,
+            Secondary: {
+                Table: refArray[2].split('.')[0],
+                Column: refArray[2].split('.')[1]
+            },
+        }
+        refs.push(ref);
+    })
+
+    console.log(refs);
 
     const json: DBML = {
         Project: dbml.match(/(?<=Project ).*\w/g)?.toString() as string,
