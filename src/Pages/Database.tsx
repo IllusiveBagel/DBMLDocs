@@ -18,6 +18,8 @@ import TableBody from "@material-ui/core/TableBody";
 import { Table } from "../Lib/Declarations";
 import { Link } from "react-router-dom";
 import { Link as MaterialLink } from "@material-ui/core";
+import TableFooter from "@material-ui/core/TableFooter";
+import TablePagination from "@material-ui/core/TablePagination";
 
 const styles = (theme: Theme) => createStyles({
     Note: {
@@ -33,7 +35,8 @@ interface IDatabaseProps extends WithStyles<typeof styles> {
 }
 
 interface IDatabaseState {
-
+    Page: number;
+    RowsPerPage: number;
 }
 
 class Database extends React.Component<IDatabaseProps, IDatabaseState> {
@@ -41,7 +44,26 @@ class Database extends React.Component<IDatabaseProps, IDatabaseState> {
 
     constructor(props: any){
         super(props);
-        this.state={};
+        this.state={
+            Page: 0,
+            RowsPerPage: 10,
+        };
+
+        this.HandleChangePage = this.HandleChangePage.bind(this);
+        this.HandleChangeRowsPerPage = this.HandleChangeRowsPerPage.bind(this);
+    }
+
+    private HandleChangePage(event: unknown, newPage: number) {
+        this.setState({
+            Page: newPage,
+        });
+    }
+
+    private HandleChangeRowsPerPage(event: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({
+            Page: 0,
+            RowsPerPage: parseInt(event.target.value, 10),
+        });
     }
 
     render() {
@@ -69,24 +91,45 @@ class Database extends React.Component<IDatabaseProps, IDatabaseState> {
                             <MaterialTable>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell align="center" width="33%">Table</TableCell>
-                                        <TableCell align="center" width="33%">Columns</TableCell>
-                                        <TableCell align="center" width="33%">Note</TableCell>
+                                        <TableCell align="center" width="25%">Table</TableCell>
+                                        <TableCell align="center" width="25%">Columns</TableCell>
+                                        <TableCell align="center" width="25%">References</TableCell>
+                                        <TableCell align="center" width="25%">Note</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {this.props.Tables.map(table => {
-                                        return(
-                                            <TableRow>
-                                                <TableCell align="center">
-                                                    <Link to={"/" + table.Name} component={MaterialLink} color="inherit">{table.Name}</Link>
-                                                </TableCell>
-                                                <TableCell align="center">{table.Columns.length}</TableCell>
-                                                <TableCell align="center">{table.Note}</TableCell>
-                                            </TableRow>
-                                        );
+                                    {this.props.Tables.length !== 0 &&
+                                        this.props.Tables.slice(this.state.Page * this.state.RowsPerPage, this.state.Page * this.state.RowsPerPage + this.state.RowsPerPage).map((table, index) => {
+                                             return (
+                                                <TableRow key={index}>
+                                                    <TableCell align="center">
+                                                        <Link to={"/" + table.Name} component={MaterialLink} color="inherit">{table.Name}</Link>
+                                                    </TableCell>
+                                                    <TableCell align="center">{table.Columns.length}</TableCell>
+                                                    <TableCell align="center"></TableCell>
+                                                    <TableCell align="center">{table.Note}</TableCell>
+                                                </TableRow>
+                                            );
                                     })}
+                                    {this.props.Tables.length === 0 &&
+                                        <TableRow>
+                                            <TableCell align="center" colSpan={4}>No Tables Found</TableCell>
+                                        </TableRow>
+                                    }
                                 </TableBody>
+                                <TableFooter>
+                                    <TableRow>
+                                        <TablePagination
+                                            colSpan={4}
+                                            rowsPerPageOptions={[5, 10, 25]}
+                                            count={this.props.Tables.length}
+                                            rowsPerPage={this.state.RowsPerPage}
+                                            page={this.state.Page}
+                                            onChangePage={this.HandleChangePage}
+                                            onChangeRowsPerPage={this.HandleChangeRowsPerPage}
+                                        />
+                                    </TableRow>
+                                </TableFooter>
                             </MaterialTable>
                         </TableContainer>
                     </Grid>

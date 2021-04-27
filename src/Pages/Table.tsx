@@ -14,6 +14,8 @@ import TableBody from "@material-ui/core/TableBody";
 import { Column } from "../Lib/Declarations";
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import Chip from "@material-ui/core/Chip";
+import TableFooter from "@material-ui/core/TableFooter";
+import TablePagination from "@material-ui/core/TablePagination";
 
 const styles = (theme: Theme) => createStyles({
     Note: {
@@ -31,7 +33,8 @@ interface ITableProps extends WithStyles<typeof styles> {
 }
 
 interface ITableState {
-
+    Page: number;
+    RowsPerPage: number;
 }
 
 class Table extends React.Component<ITableProps, ITableState> {
@@ -39,7 +42,26 @@ class Table extends React.Component<ITableProps, ITableState> {
 
     constructor(props: any){
         super(props);
-        this.state={};
+        this.state={
+            Page: 0,
+            RowsPerPage: 10,
+        };
+
+        this.HandleChangePage = this.HandleChangePage.bind(this);
+        this.HandleChangeRowsPerPage = this.HandleChangeRowsPerPage.bind(this);
+    }
+
+    private HandleChangePage(event: unknown, newPage: number) {
+        this.setState({
+            Page: newPage,
+        });
+    }
+
+    private HandleChangeRowsPerPage(event: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({
+            Page: 0,
+            RowsPerPage: parseInt(event.target.value, 10),
+        });
     }
 
     render() {
@@ -77,31 +99,50 @@ class Table extends React.Component<ITableProps, ITableState> {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {this.props.Columns.map(column => {
-                                        return(
-                                            <TableRow>
-                                                <TableCell align="center">{column.Name}</TableCell>
-                                                <TableCell align="center">{column.Type}</TableCell>
-                                                <TableCell align="center">
-                                                    {column.Options.map(option => {
-                                                        if (option === "primary key") {
-                                                            return (
-                                                                <Chip className={classes.Chip} color="secondary" icon={<VpnKeyIcon />} label="PK" size="small" />
-                                                            );
-                                                        } else {
-                                                            return (
-                                                                <Chip className={classes.Chip} label={option} size="small" />
-                                                            )
-                                                        }
-                                                    })}
-                                                </TableCell>
-                                                <TableCell align="center"></TableCell>
-                                                <TableCell align="center">{column.Default}</TableCell>
-                                                <TableCell align="center">{column.Note}</TableCell>
-                                            </TableRow>
-                                        );
+                                    {this.props.Columns.length !== 0 &&
+                                        this.props.Columns.slice(this.state.Page * this.state.RowsPerPage, this.state.Page * this.state.RowsPerPage + this.state.RowsPerPage).map((column, index) => {
+                                             return (
+                                                <TableRow>
+                                                    <TableCell align="center">{column.Name}</TableCell>
+                                                    <TableCell align="center">{column.Type}</TableCell>
+                                                    <TableCell align="center">
+                                                        {column.Options.map(option => {
+                                                            if (option === "primary key") {
+                                                                return (
+                                                                    <Chip className={classes.Chip} color="secondary" icon={<VpnKeyIcon />} label="PK" size="small" />
+                                                                );
+                                                            } else {
+                                                                return (
+                                                                    <Chip className={classes.Chip} label={option} size="small" />
+                                                                )
+                                                            }
+                                                        })}
+                                                    </TableCell>
+                                                    <TableCell align="center"></TableCell>
+                                                    <TableCell align="center">{column.Default}</TableCell>
+                                                    <TableCell align="center">{column.Note}</TableCell>
+                                                </TableRow>
+                                            );
                                     })}
+                                    {this.props.Columns.length === 0 &&
+                                        <TableRow>
+                                            <TableCell align="center" colSpan={6}>No Columns Found</TableCell>
+                                        </TableRow>
+                                    }
                                 </TableBody>
+                                <TableFooter>
+                                    <TableRow>
+                                        <TablePagination
+                                            colSpan={6}
+                                            rowsPerPageOptions={[5, 10, 25]}
+                                            count={this.props.Columns.length}
+                                            rowsPerPage={this.state.RowsPerPage}
+                                            page={this.state.Page}
+                                            onChangePage={this.HandleChangePage}
+                                            onChangeRowsPerPage={this.HandleChangeRowsPerPage}
+                                        />
+                                    </TableRow>
+                                </TableFooter>
                             </MaterialTable>
                         </TableContainer>
                     </Grid>
