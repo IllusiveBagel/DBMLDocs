@@ -14,10 +14,10 @@ Table Users {
 }
 
 Table Posts {
-    id int [primary key, not null, default: 10]
-    user_id int
+  id int [primary key, not null, default: 10]
+  user_id int
 
-    Note: 'This is the Posts Table'
+  Note: 'This is the Posts Table'
 }
 
 Ref UserPosts: Posts.user_id > Users.id
