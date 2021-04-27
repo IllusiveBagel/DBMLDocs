@@ -98,14 +98,13 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
                     <div className={classes.toolbar} />
                     <Divider />
                     <FormControl variant="outlined" size="small" className={classes.search}>
-                        <InputLabel htmlFor="searh">Search</InputLabel>
+                        <InputLabel id="search-input-label">Search</InputLabel>
                         <OutlinedInput
-                            id="search"
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton>
-                                        <SearchIcon />
-                                    </IconButton>
+                            id="search-input"
+                            label="Search"
+                            startAdornment={
+                                <InputAdornment position="start">
+                                    <SearchIcon />
                                 </InputAdornment>
                             }
                         />
