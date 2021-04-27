@@ -10,16 +10,24 @@ import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Table as MaterialTable } from "@material-ui/core";
 import { Theme, WithStyles } from "@material-ui/core/styles";
+import TableBody from "@material-ui/core/TableBody";
+import { Column } from "../Lib/Declarations";
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import Chip from "@material-ui/core/Chip";
 
 const styles = (theme: Theme) => createStyles({
     Note: {
         padding: "20px"
+    },
+    Chip: {
+        marginRight: "5px"
     }
 });
 
 interface ITableProps extends WithStyles<typeof styles> {
     Name: string;
-    Note: string
+    Columns: Column[];
+    Note: string;
 }
 
 interface ITableState {
@@ -68,6 +76,32 @@ class Table extends React.Component<ITableProps, ITableState> {
                                         <TableCell align="center">Note</TableCell>
                                     </TableRow>
                                 </TableHead>
+                                <TableBody>
+                                    {this.props.Columns.map(column => {
+                                        return(
+                                            <TableRow>
+                                                <TableCell align="center">{column.Name}</TableCell>
+                                                <TableCell align="center">{column.Type}</TableCell>
+                                                <TableCell align="center">
+                                                    {column.Options.map(option => {
+                                                        if (option === "primary key") {
+                                                            return (
+                                                                <Chip className={classes.Chip} color="secondary" icon={<VpnKeyIcon />} label="PK" size="small" />
+                                                            );
+                                                        } else {
+                                                            return (
+                                                                <Chip className={classes.Chip} label={option} size="small" />
+                                                            )
+                                                        }
+                                                    })}
+                                                </TableCell>
+                                                <TableCell align="center"></TableCell>
+                                                <TableCell align="center">{column.Default}</TableCell>
+                                                <TableCell align="center">{column.Note}</TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
+                                </TableBody>
                             </MaterialTable>
                         </TableContainer>
                     </Grid>

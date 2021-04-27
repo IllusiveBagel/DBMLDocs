@@ -7,14 +7,14 @@ Project Example {
 }
 
 Table Users {
-    id int [primary key, not null]
+    id int [primary key, not null, Note: 'This is the ID Column', default: 10]
     username varchar
 
     Note: 'This is the User Table'
 }
 
 Table Posts {
-    id int [primary key, not null]
+    id int [primary key, not null, default: 10]
     user_id int
 
     Note: 'This is the Posts Table'

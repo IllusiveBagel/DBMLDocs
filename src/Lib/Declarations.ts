@@ -16,6 +16,8 @@ export interface Column {
     Name: string;
     Type: string;
     Options: string[];
+    Default: string;
+    Note: string;
 }
 
 export interface Reference {

@@ -55,12 +55,17 @@ export default class App extends React.Component<IAppProps, IAppState> {
     return (
       <Layout Tables={this.state.Json.Tables}>
         <Route exact path='/'>
-          <Database Project={this.state.Json.Project} DBType={this.state.Json.database_type} Note={this.state.Json.Note} />
+          <Database
+            Project={this.state.Json.Project}
+            DBType={this.state.Json.database_type}
+            Tables={this.state.Json.Tables}
+            Note={this.state.Json.Note}
+          />
         </Route>
         {this.state.Json.Tables.map(table => {
           return(
             <Route path={"/" + table.Name}>
-              <Table Name={table.Name} Note={table.Note} />
+              <Table Name={table.Name} Columns={table.Columns} Note={table.Note} />
             </Route>
           );
         })}
