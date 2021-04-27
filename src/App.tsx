@@ -46,7 +46,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
   }
 
   render () {
-    if (this.state.HasData === false){
+    if (this.state.HasData === false) {
       return(
         <h1>No Data</h1>
       );
@@ -65,7 +65,11 @@ export default class App extends React.Component<IAppProps, IAppState> {
         {this.state.Json.Tables.map(table => {
           return(
             <Route path={"/" + table.Name}>
-              <Table Name={table.Name} Columns={table.Columns} Note={table.Note} />
+              <Table
+                Name={table.Name}
+                Columns={table.Columns}
+                Note={table.Note}
+              />
             </Route>
           );
         })}
