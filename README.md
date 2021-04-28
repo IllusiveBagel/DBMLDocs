@@ -4,7 +4,8 @@ A Standalone Site for Displaying Database Documentation Based on DBML Files
 ### How to Use
 1. Replace Example.dbml in the ```public/Database``` folder with your dbml file. 
 2. change the DatabaseName field in ```src/config.json``` to the name of your dbml file.
-3. Run ```npm start```
+3. Run ```yarn install```
+4. Run ```yarn start```
 
 ### Supported Features
 | Feature               | Supported               | Notes                                |
