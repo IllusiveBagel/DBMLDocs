@@ -7,7 +7,7 @@ export function DBML2JSON(dbml: string): DBML {
     let tables: Table[] = [];
 
     tablesIN?.forEach(item => {
-        const columnsIN = item.match(/(?<={\r\n)[^]+?(?=})/g)?.toString().replace(/ {4}/g,' ').split('\r\n') as string[];
+        const columnsIN = item.match(/(?<={\r\n)[^]+?(?=})/g)?.toString().replace(/ {2,}/g,' ').split('\r\n') as string[];
         const columnsFiltered = columnsIN.filter(item => {
             return item !== "";
         });
