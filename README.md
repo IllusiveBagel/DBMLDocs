@@ -2,10 +2,20 @@
 A Standalone Site for Displaying Database Documentation Based on DBML Files
 
 ### How to Use
-1. Replace Example.dbml in the ```public/Database``` folder with your dbml file. 
-2. change the DatabaseName field in ```src/config.json``` to the name of your dbml file.
-3. Run ```yarn install```
-4. Run ```yarn start```
+1. Clone Repo
+```
+git clone https://github.com/IllusiveBagel/DBMLDocs.git
+```
+2. Install Dependencies
+```
+yarn install
+```
+3. Replace Example.dbml in the ```public/Database``` folder with your dbml file. 
+4. change the DatabaseName field in ```src/config.json``` to the name of your dbml file.
+5. Start the Site
+```
+yarn start
+```
 
 ### Supported Features
 | Feature               | Supported               | Notes                                |
