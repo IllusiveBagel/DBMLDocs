@@ -24,9 +24,9 @@ export function DBML2JSON(dbml: string): DBML {
                 var columnOut: Column = {
                     Name: data[0],
                     Type: data[1],
-                    Options: options.filter(x => !x.includes("Note:") && !x.includes("default: ")),
+                    Options: options.filter(x => !x.toLowerCase().includes("note:") && !x.includes("default: ")),
                     Default: options.find(x => x.includes("default:"))?.toString() as string,
-                    Note: options.find(x => x.includes("Note:"))?.toString().match(/(?<=').*\w/g)?.toString() as string,
+                    Note: options.find(x => x.toLowerCase().includes("note:"))?.toString().match(/(?<=').*\w/g)?.toString() as string,
                 };
                 columns.push(columnOut);
             }
