@@ -135,25 +135,25 @@ class Table extends React.Component<ITableProps, ITableState> {
                                                            {this.props.References.map(ref => {
                                                                 if (ref.Type === "-") {
                                                                     return (
-                                                                        <>
+                                                                        <Grid container xs={12}>
                                                                             <Grid item xs={2}>
                                                                                 <HeightIcon className={classes.OneToOne} />
                                                                             </Grid>
                                                                             <Grid item xs={8}>
                                                                                 <Typography>{`${ref.Secondary.Table}.${ref.Secondary.Column}`}</Typography>
                                                                             </Grid>
-                                                                        </>
+                                                                        </Grid>
                                                                     );
                                                                 } else if (ref.Primary.Table === this.props.Name && ref.Primary.Column === column.Name) {
                                                                     return (
-                                                                        <>
+                                                                        <Grid container xs={12}>
                                                                             <Grid item xs={2}>
                                                                                 <CallSplitIcon className={classes.GreaterThan} />
                                                                             </Grid>
                                                                             <Grid item xs={8}>
                                                                                 <Typography>{`${ref.Secondary.Table}.${ref.Secondary.Column}`}</Typography>
                                                                             </Grid>
-                                                                        </>
+                                                                        </Grid>
                                                                     );
                                                                 } else if (ref.Secondary.Table === this.props.Name && ref.Secondary.Column === column.Name) {
                                                                     return (
