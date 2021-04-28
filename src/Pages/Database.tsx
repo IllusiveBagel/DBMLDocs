@@ -50,7 +50,7 @@ class Database extends React.Component<IDatabaseProps, IDatabaseState> {
         super(props);
         this.state={
             Page: 0,
-            RowsPerPage: 10,
+            RowsPerPage: 5,
         };
 
         this.HandleChangePage = this.HandleChangePage.bind(this);

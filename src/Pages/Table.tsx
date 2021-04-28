@@ -56,7 +56,7 @@ class Table extends React.Component<ITableProps, ITableState> {
         super(props);
         this.state={
             Page: 0,
-            RowsPerPage: 10,
+            RowsPerPage: 5,
         };
 
         this.HandleChangePage = this.HandleChangePage.bind(this);
