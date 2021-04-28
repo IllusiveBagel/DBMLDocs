@@ -36,3 +36,8 @@ yarn start
 | Table Groups          | :x:                     |                                      |
 
 [DBML Documentation](https://www.dbml.org/docs)
+
+### About Example.dbml
+The Example file that deploys with the code includes all of the supported features and can be used to give a good display of how DBMLDocs works.
+
+Currently included in the Example is 2 tables with a simple reference connecting the two tables. This file will be updated with the project to display all functionality.
