@@ -157,14 +157,14 @@ class Table extends React.Component<ITableProps, ITableState> {
                                                                     );
                                                                 } else if (ref.Secondary.Table === this.props.Name && ref.Secondary.Column === column.Name) {
                                                                     return (
-                                                                        <>
+                                                                        <Grid container xs={12}>
                                                                             <Grid item xs={2}>
                                                                                 <CallSplitIcon className={classes.LessThan} />
                                                                             </Grid>
                                                                             <Grid item xs={8}>
                                                                                 <Typography>{`${ref.Primary.Table}.${ref.Primary.Column}`}</Typography>
                                                                             </Grid>
-                                                                        </>
+                                                                        </Grid>
                                                                     )
                                                                 } else {
                                                                     return null;
