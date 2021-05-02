@@ -1,7 +1,10 @@
 import AppBar from "@material-ui/core/AppBar";
+import Button from "@material-ui/core/Button";
+import CodeIcon from "@material-ui/icons/Code";
 import createStyles from "@material-ui/core/styles/createStyles";
 import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import FormControl from "@material-ui/core/FormControl";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -10,6 +13,8 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import React from "react";
 import SearchIcon from "@material-ui/icons/Search";
@@ -42,6 +47,9 @@ const styles = (theme: Theme) => createStyles({
     title: {
         textDecoration: "none",
         color: "inherit"
+    },
+    menuIcon: {
+        marginRight: "5px",
     }
 });
 
@@ -52,6 +60,8 @@ interface INavigationProps extends WithStyles<typeof styles>, RouteComponentProp
 
 interface INavigationState {
     Search: string;
+    ExportMenu: boolean;
+    ExportMenuEl: any;
 }
 
 class Navigation extends React.Component<INavigationProps, INavigationState> {
@@ -60,7 +70,9 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
     constructor(props: any) {
         super(props);
         this.state={
-            Search: ""
+            Search: "",
+            ExportMenu: false,
+            ExportMenuEl: null,
         };
     }
 
@@ -85,13 +97,50 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
         return (
             <>
                 <AppBar position="fixed" className={classes.appBar}>
-                    <Toolbar>
-                        <IconButton>
-                            <StorageIcon />
-                        </IconButton>
-                        <Typography variant="h6" noWrap component={Link} to="/" className={classes.title}>
-                            {this.props.DBName}
-                        </Typography>
+                    <Toolbar
+                        style={{
+                            display: "flex",
+                            justifyContent: "space-between"
+                        }}
+                    >
+                            <Typography variant="h6" noWrap component={Link} to="/" className={classes.title}>
+                                <IconButton>
+                                    <StorageIcon />
+                                </IconButton>
+                                {this.props.DBName}
+                            </Typography>
+                        <Button
+                            variant="outlined"
+                            endIcon={<ExpandMoreIcon />}
+                            onClick={(event) => {
+                                this.setState({
+                                    ExportMenu: true,
+                                    ExportMenuEl: event.target
+                                })
+                            }}
+                        >
+                            Export
+                        </Button>
+                        <Menu
+                            open={this.state.ExportMenu}
+                            anchorEl={this.state.ExportMenuEl}
+                            keepMounted
+                            onClose={() => {
+                                this.setState({
+                                    ExportMenu: false,
+                                    ExportMenuEl: null
+                                })
+                            }}
+                        >
+                            <MenuItem>
+                                <StorageIcon className={classes.menuIcon} />
+                                DBML
+                            </MenuItem>
+                            <MenuItem>
+                                <CodeIcon className={classes.menuIcon} />
+                                JSON
+                            </MenuItem>
+                        </Menu>
                     </Toolbar>
                 </AppBar>
                 <Drawer
