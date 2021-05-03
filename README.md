@@ -1,5 +1,7 @@
 # DBML Docs
-A Standalone Site for Displaying Database Documentation Based on DBML Files
+A React based standalone site for generating documentation based on a DBML file. The purpose of this project is to allow the automatic generation of a documentation site for your database and allow you to host that site yourself keeping all of your data and documentation in house.
+
+[Live Demo (Coming Soon)]()
 
 ### How to Use
 1. Clone Repo
