@@ -23,8 +23,9 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import WebAssetIcon from "@material-ui/icons/WebAsset";
 import withStyles from "@material-ui/core/styles/withStyles";
+import { DBML } from "../Lib/Declarations";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-import { Table } from "../Lib/Declarations";
+import { Link as MaterialLink } from "@material-ui/core";
 import { Theme, WithStyles } from "@material-ui/core/styles";
 
 const drawerWidth = 220;
@@ -54,8 +55,7 @@ const styles = (theme: Theme) => createStyles({
 });
 
 interface INavigationProps extends WithStyles<typeof styles>, RouteComponentProps {
-    DBName: string;
-    Tables: Table[];
+    Database: DBML;
 }
 
 interface INavigationState {
@@ -107,7 +107,7 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
                                 <IconButton>
                                     <StorageIcon />
                                 </IconButton>
-                                {this.props.DBName}
+                                {this.props.Database.Project}
                             </Typography>
                         <Button
                             variant="outlined"
@@ -132,13 +132,32 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
                                 })
                             }}
                         >
-                            <MenuItem>
+                            <MenuItem
+                                
+                            >
                                 <StorageIcon className={classes.menuIcon} />
-                                DBML
+                                <MaterialLink
+                                    href={`/Database/${this.props.Database.Project}.dbml`}
+                                    download={`${this.props.Database.Project}.dbml`}
+                                    underline="none"
+                                    color="inherit"
+                                >
+                                    DBML
+                                </MaterialLink>
+                                
                             </MenuItem>
                             <MenuItem>
                                 <CodeIcon className={classes.menuIcon} />
-                                JSON
+                                <MaterialLink
+                                    href={`data:text/json;charset=utf-8,${encodeURIComponent(
+                                        JSON.stringify(this.props.Database, null, "\t")
+                                    )}`}
+                                    download={`${this.props.Database.Project}.json`}
+                                    underline="none"
+                                    color="inherit"
+                                >
+                                    JSON
+                                </MaterialLink>
                             </MenuItem>
                         </Menu>
                     </Toolbar>
@@ -169,7 +188,7 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
                         />
                     </FormControl>
                     <List component="nav" dense>
-                        {this.props.Tables.filter(x => x.Name.toLowerCase().includes(this.state.Search.toLowerCase())).map((table, index) => {
+                        {this.props.Database.Tables.filter(x => x.Name.toLowerCase().includes(this.state.Search.toLowerCase())).map((table, index) => {
                             return (
                                 <ListItemLink
                                     to={"/" + table.Name}

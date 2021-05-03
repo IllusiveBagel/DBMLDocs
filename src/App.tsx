@@ -1,3 +1,4 @@
+import config from "./config.json";
 import Database from "./Pages/Database";
 import Layout from "./Components/Layout";
 import React from "react";
@@ -5,7 +6,6 @@ import Table from "./Pages/Table";
 import { DBML, Reference } from "./Lib/Declarations";
 import { DBML2JSON } from "./Lib/DBMLLib";
 import { Route } from "react-router";
-import config from "./config.json";
 
 interface IAppProps {
 
@@ -68,7 +68,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
         }
 
         return (
-            <Layout Tables={this.state.Json.Tables} DBName={this.state.Json.Project}>
+            <Layout Database={this.state.Json}>
                 <Route exact path='/'>
                     <Database
                         Project={this.state.Json.Project}

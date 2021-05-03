@@ -4,7 +4,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Navigation from "./Navigation";
 import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { Table } from "../Lib/Declarations";
+import { DBML } from "../Lib/Declarations";
 import { Theme, ThemeProvider, WithStyles } from "@material-ui/core/styles";
 
 const styles = (theme: Theme) => createStyes({
@@ -25,8 +25,7 @@ const darkTheme = createMuiTheme({
 });
 
 interface ILayoutProps extends WithStyles<typeof styles> {
-    Tables: Table[];
-    DBName: string;
+    Database: DBML;
 }
 
 interface ILayoutState {
@@ -48,7 +47,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
             <ThemeProvider theme={darkTheme}>
                 <div className={classes.root}>
                     <CssBaseline />
-                    <Navigation Tables={this.props.Tables} DBName={this.props.DBName} />
+                    <Navigation Database={this.props.Database} />
                     <main className={classes.content}>
                         <div className={classes.toolbar} />
                         {this.props.children}
