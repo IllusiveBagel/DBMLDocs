@@ -35,7 +35,8 @@ export function DBML2JSON(dbml: string): DBML {
         var tableNote = item.match(/(?<=Note: ').*\w/g) as string[];
         
         var table: Table = {
-            Name: item.match(/(?<=Table ).*\w/g)?.toString() as string,
+            Name: item.match(/(?<=Table )[^]+?(?= )/g)?.toString() as string,
+            Alias: item.match(/(?<=as )[^]+?(?= {)/g)?.toString() as string,
             Columns: columns,
             Note: tableNote[tableNote?.length - 1] as string,
         };

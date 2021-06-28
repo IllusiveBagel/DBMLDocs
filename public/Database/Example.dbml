@@ -6,18 +6,28 @@ Project Example {
     '''
 }
 
-Table Users {
-    id int [primary key, not null, Note: 'This is the ID Column', default: 10]
-    username varchar
-
-    Note: 'This is the User Table'
+Table Users as U {
+    ID integer [primary key]
+    Username varchar
+    Role varchar
+    created_at timestamp
+    Note: 'Users Table'
 }
 
 Table Posts {
-  id int [primary key, not null, default: 10]
-  user_id int
-
-  Note: 'This is the Posts Table'
+    ID integer [primary key]
+    Title varchar
+    Body text [note: 'Content of the Post']
+    User integer
+    Status Post_Status
+    created_at timestamp
+    Note: 'Posts Table'
 }
 
-Ref UserPosts: Posts.user_id > Users.id
+Enum Post_Status {
+    Draft
+    Published
+    Private [note: 'Visible Via URL Only']
+}
+
+Ref PostsUserID: Posts.User > Users.ID  // Many to One

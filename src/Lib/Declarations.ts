@@ -3,11 +3,13 @@ export interface DBML {
     database_type: string;
     Note: string;
     Tables: Table[];
+    Enums: Enum[];
     References: Reference[];
 }
 
 export interface Table {
     Name: string;
+    Alias: string;
     Columns: Column[];
     Note: string;
 }
@@ -18,6 +20,11 @@ export interface Column {
     Options: string[];
     Default: string;
     Note: string;
+}
+
+export interface Enum {
+    Name: string;
+    Items: string[];
 }
 
 export interface Reference {

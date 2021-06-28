@@ -84,6 +84,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
                         <Route path={"/" + table.Name} key={index}>
                             <Table
                                 Name={table.Name}
+                                Alias={table.Alias}
                                 Columns={table.Columns}
                                 Note={table.Note}
                                 References={this.GetReferences(table.Name, this.state.Json.References)}
