@@ -24,7 +24,7 @@ yarn start
 |:---------------------:|:-----------------------:|:------------------------------------:|
 | Project Definition    | :heavy_check_mark:      |                                      |
 | Table Definition      | :heavy_check_mark:      |                                      |
-| Table Alias           | :x:                     |                                      |
+| Table Alias           | :heavy_check_mark:      |                                      |
 | Table Notes           | :heavy_check_mark:      |                                      |
 | Table Settings        | :x:                     | Not Yet Supported By DBML Standard   |
 | Column Definition     | :heavy_check_mark:      |                                      |
