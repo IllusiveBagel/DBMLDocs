@@ -27,6 +27,7 @@ import { DBML } from "../Lib/Declarations";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import { Link as MaterialLink } from "@material-ui/core";
 import { Theme, WithStyles } from "@material-ui/core/styles";
+import ListSubheader from "@material-ui/core/ListSubheader";
 
 const drawerWidth = 220;
 
@@ -188,6 +189,7 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
                         />
                     </FormControl>
                     <List component="nav" dense>
+                        <ListSubheader>Tables</ListSubheader>
                         {this.props.Database.Tables.filter(x => x.Name.toLowerCase().includes(this.state.Search.toLowerCase())).map((table, index) => {
                             return (
                                 <ListItemLink
@@ -198,6 +200,9 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
                                 />
                             );
                         })}
+                        {this.props.Database.Enums !== undefined &&
+                            <ListSubheader>Enums</ListSubheader>
+                        }
                     </List>
                 </Drawer>
             </>

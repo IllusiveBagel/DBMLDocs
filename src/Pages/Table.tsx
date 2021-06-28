@@ -39,6 +39,7 @@ const styles = (theme: Theme) => createStyles({
 
 interface ITableProps extends WithStyles<typeof styles> {
     Name: string;
+    Alias: string;
     Columns: Column[];
     Note: string;
     References: Reference[];
@@ -83,9 +84,21 @@ class Table extends React.Component<ITableProps, ITableState> {
             <>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <Typography variant="h2">
-                            {this.props.Name}
-                        </Typography>
+                        {this.props.Alias === undefined &&
+                            <Typography variant="h2">
+                                {this.props.Name}
+                            </Typography>
+                        }
+                        {this.props.Alias !== undefined &&
+                            <>
+                                <Typography variant="h2">
+                                    {this.props.Alias}
+                                </Typography>
+                                <Typography variant="subtitle1">
+                                    Table Name: {this.props.Name}
+                                </Typography>
+                            </>
+                        }
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="h5">
