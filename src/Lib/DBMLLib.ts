@@ -24,7 +24,7 @@ export function DBML2JSON(dbml: string): DBML {
 function Tables(tablesIN: any): Table[] {
     let tables: Table[] = [];
 
-    tablesIN?.forEach((item: any) => {
+    tablesIN?.forEach((item: string) => {
         const columnsIN = item.match(/(?<={\r\n)[^]+?(?=})/g)?.toString().replace(/ {2,}/g,' ').split('\r\n') as string[];
         const columnsFiltered = columnsIN.filter(item => {
             return item !== "";
@@ -49,7 +49,7 @@ function Tables(tablesIN: any): Table[] {
 function Columns(columnsFiltered: any): Column[] {
     const columns = [] as Column[];
 
-    columnsFiltered.forEach((column: any) => {
+    columnsFiltered.forEach((column: string) => {
         var rawData = column.substring(1);
         var options = column.match(/(?<=\[).+?(?=\])/g)?.toString().split(',') as string[];
         if (options === undefined) {
@@ -74,7 +74,7 @@ function Columns(columnsFiltered: any): Column[] {
 function References(refsIn: any, refNames: any): Reference[] {
     let refs: Reference[] = [];
 
-    refsIn.forEach((refIn: any, index: number) => {
+    refsIn.forEach((refIn: string, index: number) => {
         var refArray = refIn.split(' ');
         var ref: Reference = {
             Name: refNames[index],
