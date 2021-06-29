@@ -4,33 +4,32 @@ import { Column, ConnectionType, DBML, Reference, Table } from "./Declarations";
 // This can be more efficient
 export function DBML2JSON(dbml: string): DBML {
     const tablesIN = dbml.match(/(Table)[^]+?({)[^]+?(})/g);
+    let tables: Table[] = Tables(tablesIN);
+
+    var refsIn = dbml.match(/(?<=Ref .*: ).*\w/g) as string[];
+    var refNames = dbml.match(/(?<=Ref ).+?(?=:)/g) as string[];
+    const refs: Reference[] = References(refsIn, refNames);
+
+    const json: DBML = {
+        Project: dbml.match(/(?<=Project ).*\w/g)?.toString() as string,
+        database_type: dbml.match(/(?<=database_type: ').*\w/g)?.toString() as string,
+        Note: dbml.match(/(?<=Note: ''')[^]+(?=''')/gm)?.toString().replace(/ {4}/g,' ') as string,
+        Tables: tables,
+        References: refs,
+    } as DBML;
+
+    return json;
+}
+
+function Tables(tablesIN: any): Table[] {
     let tables: Table[] = [];
 
-    tablesIN?.forEach(item => {
+    tablesIN?.forEach((item: any) => {
         const columnsIN = item.match(/(?<={\r\n)[^]+?(?=})/g)?.toString().replace(/ {2,}/g,' ').split('\r\n') as string[];
         const columnsFiltered = columnsIN.filter(item => {
             return item !== "";
         });
-        const columns = [] as Column[];
-
-        columnsFiltered.forEach(column => {
-            var rawData = column.substring(1);
-            var options = column.match(/(?<=\[).+?(?=\])/g)?.toString().split(',') as string[];
-            if (options === undefined) {
-                options = [] as string[];
-            }
-            var data = rawData.split(' ') as string[];
-            if (data[0] !== "Note:") {
-                var columnOut: Column = {
-                    Name: data[0],
-                    Type: data[1],
-                    Options: options.filter(x => !x.toLowerCase().includes("note:") && !x.includes("default: ")),
-                    Default: options.find(x => x.includes("default:"))?.toString() as string,
-                    Note: options.find(x => x.toLowerCase().includes("note:"))?.toString().match(/(?<=').*\w/g)?.toString() as string,
-                };
-                columns.push(columnOut);
-            }
-        });
+        const columns = Columns(columnsFiltered);
 
         var tableNote = item.match(/(?<=Note: ').*\w/g) as string[];
         
@@ -44,11 +43,38 @@ export function DBML2JSON(dbml: string): DBML {
         tables.push(table);
     });
 
-    let refs: Reference[] = [];
-    var refsIn = dbml.match(/(?<=Ref .*: ).*\w/g) as string[];
-    var refNames = dbml.match(/(?<=Ref ).+?(?=:)/g) as string[];
+    return tables;
+}
 
-    refsIn.forEach((refIn, index) => {
+function Columns(columnsFiltered: any): Column[] {
+    const columns = [] as Column[];
+
+    columnsFiltered.forEach((column: any) => {
+        var rawData = column.substring(1);
+        var options = column.match(/(?<=\[).+?(?=\])/g)?.toString().split(',') as string[];
+        if (options === undefined) {
+            options = [] as string[];
+        }
+        var data = rawData.split(' ') as string[];
+        if (data[0] !== "Note:") {
+            var columnOut: Column = {
+                Name: data[0],
+                Type: data[1],
+                Options: options.filter(x => !x.toLowerCase().includes("note:") && !x.includes("default: ")),
+                Default: options.find(x => x.includes("default:"))?.toString() as string,
+                Note: options.find(x => x.toLowerCase().includes("note:"))?.toString().match(/(?<=').*\w/g)?.toString() as string,
+            };
+            columns.push(columnOut);
+        }
+    });
+
+    return columns;
+}
+
+function References(refsIn: any, refNames: any): Reference[] {
+    let refs: Reference[] = [];
+
+    refsIn.forEach((refIn: any, index: number) => {
         var refArray = refIn.split(' ');
         var ref: Reference = {
             Name: refNames[index],
@@ -63,15 +89,7 @@ export function DBML2JSON(dbml: string): DBML {
             },
         }
         refs.push(ref);
-    })
+    });
 
-    const json: DBML = {
-        Project: dbml.match(/(?<=Project ).*\w/g)?.toString() as string,
-        database_type: dbml.match(/(?<=database_type: ').*\w/g)?.toString() as string,
-        Note: dbml.match(/(?<=Note: ''')[^]+(?=''')/gm)?.toString().replace(/ {4}/g,' ') as string,
-        Tables: tables,
-        References: refs,
-    } as DBML;
-
-    return json;
+    return refs;
 }
