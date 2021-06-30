@@ -127,28 +127,28 @@ class Table extends React.Component<ITableProps, ITableState> {
                                     {this.props.Columns.length !== 0 &&
                                         this.props.Columns.slice(this.state.Page * this.state.RowsPerPage, this.state.Page * this.state.RowsPerPage + this.state.RowsPerPage).map((column, index) => {
                                              return (
-                                                <TableRow>
+                                                <TableRow key={index}>
                                                     <TableCell align="center">{column.Name}</TableCell>
                                                     <TableCell align="center">{column.Type}</TableCell>
                                                     <TableCell align="center">
-                                                        {column.Options.map(option => {
+                                                        {column.Options.map((option, index) => {
                                                             if (option === "primary key") {
                                                                 return (
-                                                                    <Chip className={classes.Chip} color="secondary" icon={<VpnKeyIcon />} label="PK" size="small" />
+                                                                    <Chip className={classes.Chip} color="secondary" icon={<VpnKeyIcon />} label="PK" size="small" key={index} />
                                                                 );
                                                             } else {
                                                                 return (
-                                                                    <Chip className={classes.Chip} label={option} size="small" />
+                                                                    <Chip className={classes.Chip} label={option} size="small" key={index} />
                                                                 )
                                                             }
                                                         })}
                                                     </TableCell>
                                                     <TableCell align="center">
                                                         <Grid container direction="row" justify="center">
-                                                           {this.props.References.map(ref => {
+                                                           {this.props.References.map((ref, index) => {
                                                                 if (ref.Type === "-") {
                                                                     return (
-                                                                        <Grid container xs={12}>
+                                                                        <Grid container key={index}>
                                                                             <Grid item xs={2}>
                                                                                 <HeightIcon className={classes.OneToOne} />
                                                                             </Grid>
@@ -159,7 +159,7 @@ class Table extends React.Component<ITableProps, ITableState> {
                                                                     );
                                                                 } else if (ref.Primary.Table === this.props.Name && ref.Primary.Column === column.Name) {
                                                                     return (
-                                                                        <Grid container xs={12}>
+                                                                        <Grid container key={index}>
                                                                             <Grid item xs={2}>
                                                                                 <CallSplitIcon className={classes.GreaterThan} />
                                                                             </Grid>
@@ -170,7 +170,7 @@ class Table extends React.Component<ITableProps, ITableState> {
                                                                     );
                                                                 } else if (ref.Secondary.Table === this.props.Name && ref.Secondary.Column === column.Name) {
                                                                     return (
-                                                                        <Grid container xs={12}>
+                                                                        <Grid container key={index}>
                                                                             <Grid item xs={2}>
                                                                                 <CallSplitIcon className={classes.LessThan} />
                                                                             </Grid>
