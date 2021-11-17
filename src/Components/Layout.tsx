@@ -44,7 +44,7 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
     constructor(props: any) {
         super(props);
         this.state={
-            darkTheme: true,
+            darkTheme: window.matchMedia("(prefers-color-scheme: dark)").matches,
         };
     }
 
