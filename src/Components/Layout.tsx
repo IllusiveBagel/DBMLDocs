@@ -24,12 +24,18 @@ const darkTheme = createMuiTheme({
     },
 });
 
+const lightTheme = createMuiTheme({
+    palette: {
+        type: 'light',
+    },
+});
+
 interface ILayoutProps extends WithStyles<typeof styles> {
     Database: DBML;
 }
 
 interface ILayoutState {
-
+    darkTheme: boolean;
 }
 
 class Layout extends React.Component<ILayoutProps, ILayoutState> {
@@ -37,17 +43,31 @@ class Layout extends React.Component<ILayoutProps, ILayoutState> {
 
     constructor(props: any) {
         super(props);
-        this.state={};
+        this.state={
+            darkTheme: window.matchMedia("(prefers-color-scheme: dark)").matches,
+        };
+    }
+
+    public setTheme() {
+        if (this.state.darkTheme) {
+            this.setState({
+                darkTheme: false
+            });
+        } else {
+            this.setState({
+                darkTheme: true
+            });
+        }
     }
 
     render() {
         const classes = this.props.classes;
 
         return (
-            <ThemeProvider theme={darkTheme}>
+            <ThemeProvider theme={this.state.darkTheme ? darkTheme : lightTheme}>
                 <div className={classes.root}>
                     <CssBaseline />
-                    <Navigation Database={this.props.Database} />
+                    <Navigation Database={this.props.Database} theme={this.state.darkTheme} setTheme={this.setTheme.bind(this)} />
                     <main className={classes.content}>
                         <div className={classes.toolbar} />
                         {this.props.children}
