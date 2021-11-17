@@ -18,10 +18,12 @@ import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
 import CallSplitIcon from '@material-ui/icons/CallSplit';
 import HeightIcon from '@material-ui/icons/Height';
+import gfm from "remark-gfm";
+import ReactMarkdown from "react-markdown";
 
 const styles = (theme: Theme) => createStyles({
     Note: {
-        padding: "20px"
+        padding: "5px 20px 20px 20px"
     },
     Chip: {
         marginRight: "5px"
@@ -101,13 +103,8 @@ class Table extends React.Component<ITableProps, ITableState> {
                         }
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="h5">
-                            Note:
-                        </Typography>
-                        <Paper variant="outlined" className={classes.Note}>
-                            <Typography>
-                                {this.props.Note}
-                            </Typography>
+                        <Paper className={classes.Note}>
+                            <ReactMarkdown remarkPlugins={[gfm]} children={this.props.Note} />
                         </Paper>
                     </Grid>
                     <Grid item xs={12}>

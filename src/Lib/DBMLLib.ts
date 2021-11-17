@@ -3,6 +3,7 @@ import { Column, ConnectionType, DBML, Reference, Table } from "./Declarations";
 // TODO
 // This can be more efficient
 export function DBML2JSON(dbml: string): DBML {
+    const projectIN = dbml.match(/(Project)[^]+?({)[^]+?(})/g)?.toString() as string;
     const tablesIN = dbml.match(/(Table)[^]+?({)[^]+?(})/g);
     let tables: Table[] = Tables(tablesIN);
 
@@ -10,10 +11,16 @@ export function DBML2JSON(dbml: string): DBML {
     var refNames = dbml.match(/(?<=Ref ).+?(?=:)/g) as string[];
     const refs: Reference[] = References(refsIn, refNames);
 
+    var note = projectIN?.match(/(?<=Note: ''')[^]+(?=''')/gm)?.toString().replace(/ {4}/g,' ') as string;
+
+    if (note == null) {
+        note = projectIN?.match(/(?<=Note: ').*\w/g)?.toString() as string
+    }
+
     const json: DBML = {
         Project: dbml.match(/(?<=Project ).*\w/g)?.toString() as string,
         database_type: dbml.match(/(?<=database_type: ').*\w/g)?.toString() as string,
-        Note: dbml.match(/(?<=Note: ''')[^]+(?=''')/gm)?.toString().replace(/ {4}/g,' ') as string,
+        Note: note,
         Tables: tables,
         References: refs,
     } as DBML;
@@ -31,13 +38,18 @@ function Tables(tablesIN: any): Table[] {
         });
         const columns = Columns(columnsFiltered);
 
-        var tableNote = item.match(/(?<=Note: ').*\w/g) as string[];
+        var note = item.match(/(?<=Note: ''')[^]+(?=''')/gm)?.toString().replace(/ {4}/g,' ') as string;
+
+        if (note === null || note === "" || note === undefined) {
+            var noteArray = item.match(/(?<=Note: ').*\w/g) as string[];
+            note = noteArray[noteArray.length - 1] as string;
+        }
         
         var table: Table = {
-            Name: item.match(/(?<=Table )[^]+?(?= )/g)?.toString() as string,
+            Name: item.match(/(?<=Table )[^]+?(?= )/g)?.toString().split(',')[0] as string,
             Alias: item.match(/(?<=as )[^]+?(?= {)/g)?.toString() as string,
             Columns: columns,
-            Note: tableNote[tableNote?.length - 1] as string,
+            Note: note,
         };
 
         tables.push(table);

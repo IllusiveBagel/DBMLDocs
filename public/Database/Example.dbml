@@ -11,7 +11,10 @@ Table Users as U {
     Username varchar
     Role varchar
     created_at timestamp
-    Note: 'Users Table'
+    Note: '''
+        # Users Table
+        Table for storing users
+    '''
 }
 
 Table Posts {

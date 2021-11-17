@@ -83,9 +83,6 @@ class Database extends React.Component<IDatabaseProps, IDatabaseState> {
                         <Chip color="secondary" icon={<StorageIcon />} label={this.props.DBType} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="h5">
-                            Note:
-                        </Typography>
                         <Paper className={classes.Note}>
                             <ReactMarkdown remarkPlugins={[gfm]} children={this.props.Note} />
                         </Paper>
@@ -98,7 +95,6 @@ class Database extends React.Component<IDatabaseProps, IDatabaseState> {
                                         <TableCell align="center" width="25%">Table</TableCell>
                                         <TableCell align="center" width="25%">Columns</TableCell>
                                         <TableCell align="center" width="25%">References</TableCell>
-                                        <TableCell align="center" width="25%">Note</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -113,7 +109,6 @@ class Database extends React.Component<IDatabaseProps, IDatabaseState> {
                                                     <TableCell align="center">
                                                         {this.props.GetReferences(table.Name, this.props.References).length}
                                                     </TableCell>
-                                                    <TableCell align="center">{table.Note}</TableCell>
                                                 </TableRow>
                                             );
                                     })}
