@@ -25,7 +25,7 @@ import WebAssetIcon from "@material-ui/icons/WebAsset";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { DBML } from "../Lib/Declarations";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-import { Link as MaterialLink } from "@material-ui/core";
+import { ButtonGroup, Link as MaterialLink } from "@material-ui/core";
 import { Theme, WithStyles } from "@material-ui/core/styles";
 import ListSubheader from "@material-ui/core/ListSubheader";
 
@@ -57,10 +57,14 @@ const styles = (theme: Theme) => createStyles({
 
 interface INavigationProps extends WithStyles<typeof styles>, RouteComponentProps {
     Database: DBML;
+    theme: boolean;
+    setTheme: any;
 }
 
 interface INavigationState {
     Search: string;
+    ThemeMenu: boolean;
+    ThemeMenuEl: any;
     ExportMenu: boolean;
     ExportMenuEl: any;
 }
@@ -72,6 +76,8 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
         super(props);
         this.state={
             Search: "",
+            ThemeMenu: false,
+            ThemeMenuEl: null,
             ExportMenu: false,
             ExportMenuEl: null,
         };
@@ -110,18 +116,25 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
                                 </IconButton>
                                 {this.props.Database.Project}
                             </Typography>
-                        <Button
-                            variant="outlined"
-                            endIcon={<ExpandMoreIcon />}
-                            onClick={(event) => {
-                                this.setState({
-                                    ExportMenu: true,
-                                    ExportMenuEl: event.target
-                                })
-                            }}
-                        >
-                            Export
-                        </Button>
+                        <ButtonGroup variant="outlined" aria-label="Simple Interaction buttons">
+                            <Button variant="outlined" onClick={this.props.setTheme}>
+                                {this.props.theme? 'Theme: Dark': 'Theme: Light'}
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                endIcon={<ExpandMoreIcon />}
+                                onClick={(event) => {
+                                    this.setState({
+                                        ExportMenu: true,
+                                        ExportMenuEl: event.target
+                                    })
+                                }}
+                            >
+                                Export
+                            </Button>
+                        </ButtonGroup>
+                        
+
                         <Menu
                             open={this.state.ExportMenu}
                             anchorEl={this.state.ExportMenuEl}
@@ -133,9 +146,7 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
                                 })
                             }}
                         >
-                            <MenuItem
-                                
-                            >
+                            <MenuItem>
                                 <StorageIcon className={classes.menuIcon} />
                                 <MaterialLink
                                     href={`/Database/${this.props.Database.Project}.dbml`}
@@ -145,7 +156,6 @@ class Navigation extends React.Component<INavigationProps, INavigationState> {
                                 >
                                     DBML
                                 </MaterialLink>
-                                
                             </MenuItem>
                             <MenuItem>
                                 <CodeIcon className={classes.menuIcon} />
