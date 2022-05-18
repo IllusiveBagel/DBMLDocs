@@ -1,0 +1,25 @@
+.appBar {
+    z-index: 1300 !important;
+}
+
+.drawer {
+    width: 220px;
+    flex-shrink: 0;
+}
+
+.drawerPaper {
+    width: 220px;
+}
+
+.search {
+    margin: 16px 8px 8px !important;
+}
+
+.title {
+    text-decoration: none;
+    color: inherit;
+}
+
+.menuIcon {
+    margin-right: 5px;
+}
