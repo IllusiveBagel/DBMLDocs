@@ -12,28 +12,28 @@ function App() {
   const [hasData, setHasData] = useState<boolean>(false);
 
   useEffect(() => {
-    GetData();
+    getData();
   }, []);
 
-  const GetData = async () => {
-    const Data = await fetch(`/Database/${config.DatabaseName}.dbml`)
+  const getData = async () => {
+    const data = await fetch(`/Database/${config.DatabaseName}.dbml`)
       .then((r) => r.text())
       .then(text => {
         return text.toString();
       });
 
-    const Json = DBML2JSON(Data);
+    const json = DBML2JSON(data);
 
-    setJson(Json);
+    setJson(json);
     setHasData(true);
   };
 
-  const GetReferences = (tableName: string, References: Reference[]) => {
+  const getReferences = (tableName: string, references: Reference[]) => {
     var refs: Reference[] = [];
 
-    if (References !== undefined) {
-      References.forEach(ref => {
-        if (ref.Primary.Table === tableName || ref.Secondary.Table === tableName) {
+    if (references !== undefined) {
+      references.forEach(ref => {
+        if (ref.primary.table === tableName || ref.secondary.table === tableName) {
           refs.push(ref);
         }
       });
@@ -49,33 +49,33 @@ function App() {
   }
 
   return (
-    <Layout Database={json}>
+    <Layout database={json}>
       <Routes>
         <Route
           path='/'
           element={
             <Database
-              Project={json.Project}
-              DBType={json.database_type}
-              Tables={json.Tables}
-              Note={json.Note}
-              References={json.References}
-              GetReferences={GetReferences}
+              project={json.project}
+              dbType={json.databaseType}
+              tables={json.tables}
+              note={json.note}
+              references={json.references}
+              getReferences={getReferences}
             />
           }
         />
-        {json.Tables.map((table, index) => {
+        {json.tables.map((table, index) => {
           return (
             <Route
-              path={"/" + table.Name}
+              path={"/" + table.name}
               key={index}
               element={
                 <Table
-                  Name={table.Name}
-                  Alias={table.Alias}
-                  Columns={table.Columns}
-                  Note={table.Note}
-                  References={GetReferences(table.Name, json.References)}
+                  name={table.name}
+                  alias={table.alias}
+                  columns={table.columns}
+                  note={table.note}
+                  references={getReferences(table.name, json.references)}
                 />
               }
             />

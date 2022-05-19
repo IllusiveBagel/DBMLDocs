@@ -1,3 +1,3 @@
 import { Reference } from "../lib/Declarations";
 
-export type GetReferences = (tableName: string, References: Reference[]) => Reference[];
+export type getReferences = (tableName: string, references: Reference[]) => Reference[];

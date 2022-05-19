@@ -10,9 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import InputLabel from "@mui/material/InputLabel";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import ListItemLink from "../ListItemLink/ListItemLink";
 import ListSubheader from "@mui/material/ListSubheader";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -29,51 +27,30 @@ import { Link } from "react-router-dom";
 import { Link as MaterialLink } from "@mui/material";
 
 interface INavigationProps {
-    Database: DBML;
+    database: DBML;
     theme: boolean;
     setTheme: any;
 }
 
 interface INavigationState {
-    Search: string;
-    ThemeMenu: boolean;
-    ThemeMenuEl: any;
-    ExportMenu: boolean;
-    ExportMenuEl: any;
+    search: string;
+    themeMenu: boolean;
+    themeMenuEl: any;
+    exportMenu: boolean;
+    exportMenuEl: any;
 }
 
-const Navigation = (props: INavigationProps) => {
+const Navigation = ({ database, theme, setTheme }: INavigationProps) => {
 
     const [navState, setNavState] = useState<INavigationState>(
         {
-            Search: "",
-            ThemeMenu: false,
-            ThemeMenuEl: null,
-            ExportMenu: false,
-            ExportMenuEl: null,
+            search: "",
+            themeMenu: false,
+            themeMenuEl: null,
+            exportMenu: false,
+            exportMenuEl: null,
         }
     );
-
-    const ListItemLink = (props: any) => {
-        const { icon, primary, to } = props;
-
-        const renderLink = React.useMemo(
-            () =>
-                React.forwardRef((itemProps: any, ref: any) => {
-                    return <Link to={to} ref={ref} {...itemProps} role={undefined} />;
-                }),
-            [to],
-        );
-
-        return (
-            <li>
-                <ListItem button component={renderLink}>
-                    <ListItemIcon>{icon}</ListItemIcon>
-                    <ListItemText primary={primary} />
-                </ListItem>
-            </li>
-        );
-    };
 
     return (
         <>
@@ -88,11 +65,11 @@ const Navigation = (props: INavigationProps) => {
                         <IconButton>
                             <StorageIcon />
                         </IconButton>
-                        {props.Database.Project}
+                        {database.project}
                     </Typography>
                     <ButtonGroup variant="outlined" aria-label="Simple Interaction buttons">
-                        <Button variant="outlined" onClick={props.setTheme}>
-                            {props.theme ? 'Theme: Dark' : 'Theme: Light'}
+                        <Button variant="outlined" onClick={setTheme}>
+                            {theme ? 'Theme: Dark' : 'Theme: Light'}
                         </Button>
                         <Button
                             variant="outlined"
@@ -101,8 +78,8 @@ const Navigation = (props: INavigationProps) => {
                                 setNavState(
                                     {
                                         ...navState,
-                                        ExportMenu: true,
-                                        ExportMenuEl: event.target
+                                        exportMenu: true,
+                                        exportMenuEl: event.target
                                     }
                                 );
                             }}
@@ -113,15 +90,15 @@ const Navigation = (props: INavigationProps) => {
 
 
                     <Menu
-                        open={navState.ExportMenu}
-                        anchorEl={navState.ExportMenuEl}
+                        open={navState.exportMenu}
+                        anchorEl={navState.exportMenuEl}
                         keepMounted
                         onClose={() => {
                             setNavState(
                                 {
                                     ...navState,
-                                    ExportMenu: false,
-                                    ExportMenuEl: null
+                                    exportMenu: false,
+                                    exportMenuEl: null
                                 }
                             );
                         }}
@@ -129,8 +106,8 @@ const Navigation = (props: INavigationProps) => {
                         <MenuItem>
                             <StorageIcon className={styles.menuIcon} />
                             <MaterialLink
-                                href={`/Database/${props.Database.Project}.dbml`}
-                                download={`${props.Database.Project}.dbml`}
+                                href={`/Database/${database.project}.dbml`}
+                                download={`${database.project}.dbml`}
                                 underline="none"
                                 color="inherit"
                             >
@@ -141,9 +118,9 @@ const Navigation = (props: INavigationProps) => {
                             <CodeIcon className={styles.menuIcon} />
                             <MaterialLink
                                 href={`data:text/json;charset=utf-8,${encodeURIComponent(
-                                    JSON.stringify(props.Database, null, "\t")
+                                    JSON.stringify(database, null, "\t")
                                 )}`}
-                                download={`${props.Database.Project}.json`}
+                                download={`${database.project}.json`}
                                 underline="none"
                                 color="inherit"
                             >
@@ -173,7 +150,7 @@ const Navigation = (props: INavigationProps) => {
                             setNavState(
                                 {
                                     ...navState,
-                                    Search: event.target.value
+                                    search: event.target.value
                                 }
                             );
                         }}
@@ -186,17 +163,17 @@ const Navigation = (props: INavigationProps) => {
                 </FormControl>
                 <List component="nav" dense>
                     <ListSubheader>Tables</ListSubheader>
-                    {props.Database.Tables.filter(x => x.Name.toLowerCase().includes(navState.Search.toLowerCase())).map((table, index) => {
+                    {database.tables.filter(x => x.name.toLowerCase().includes(navState.search.toLowerCase())).map((table, index) => {
                         return (
                             <ListItemLink
-                                to={"/" + table.Name}
-                                primary={table.Name}
+                                to={"/" + table.name}
+                                primary={table.name}
                                 icon={<WebAssetIcon />}
                                 key={index}
                             />
                         );
                     })}
-                    {props.Database.Enums !== undefined &&
+                    {database.enums !== undefined &&
                         <ListSubheader>Enums</ListSubheader>
                     }
                 </List>

@@ -18,11 +18,11 @@ export function DBML2JSON(dbml: string): DBML {
     }
 
     const json: DBML = {
-        Project: dbml.match(/(?<=Project ).*\w/g)?.toString() as string,
-        database_type: dbml.match(/(?<=database_type: ').*\w/g)?.toString() as string,
-        Note: note,
-        Tables: tables,
-        References: refs,
+        project: dbml.match(/(?<=Project ).*\w/g)?.toString() as string,
+        databaseType: dbml.match(/(?<=database_type: ').*\w/g)?.toString() as string,
+        note: note,
+        tables: tables,
+        references: refs,
     } as DBML;
 
     return json;
@@ -46,10 +46,10 @@ function Tables(tablesIN: any): Table[] {
         }
         
         var table: Table = {
-            Name: item.match(/(?<=Table )[^]+?(?= )/g)?.toString().split(',')[0] as string,
-            Alias: item.match(/(?<=as )[^]+?(?= {)/g)?.toString() as string,
-            Columns: columns,
-            Note: note,
+            name: item.match(/(?<=Table )[^]+?(?= )/g)?.toString().split(',')[0] as string,
+            alias: item.match(/(?<=as )[^]+?(?= {)/g)?.toString() as string,
+            columns: columns,
+            note: note,
         };
 
         tables.push(table);
@@ -70,11 +70,11 @@ function Columns(columnsFiltered: any): Column[] {
         var data = rawData.split(' ') as string[];
         if (data[0] !== "Note:") {
             var columnOut: Column = {
-                Name: data[0],
-                Type: data[1],
-                Options: options.filter(x => !x.toLowerCase().includes("note:") && !x.includes("default: ")),
-                Default: options.find(x => x.includes("default:"))?.toString() as string,
-                Note: options.find(x => x.toLowerCase().includes("note:"))?.toString().match(/(?<=').*\w/g)?.toString() as string,
+                name: data[0],
+                type: data[1],
+                options: options.filter(x => !x.toLowerCase().includes("note:") && !x.includes("default: ")),
+                default: options.find(x => x.includes("default:"))?.toString() as string,
+                note: options.find(x => x.toLowerCase().includes("note:"))?.toString().match(/(?<=').*\w/g)?.toString() as string,
             };
             columns.push(columnOut);
         }
@@ -89,15 +89,15 @@ function References(refsIn: any, refNames: any): Reference[] {
     refsIn.forEach((refIn: string, index: number) => {
         var refArray = refIn.split(' ');
         var ref: Reference = {
-            Name: refNames[index],
-            Primary: {
-                Table: refArray[0].split('.')[0],
-                Column: refArray[0].split('.')[1]
+            name: refNames[index],
+            primary: {
+                table: refArray[0].split('.')[0],
+                column: refArray[0].split('.')[1]
             },
-            Type: refArray[1].toString() as ConnectionType,
-            Secondary: {
-                Table: refArray[2].split('.')[0],
-                Column: refArray[2].split('.')[1]
+            type: refArray[1].toString() as ConnectionType,
+            secondary: {
+                table: refArray[2].split('.')[0],
+                column: refArray[2].split('.')[1]
             },
         }
         refs.push(ref);

@@ -1,42 +1,42 @@
 export interface DBML {
-    Project: string;
-    database_type: string;
-    Note: string;
-    Tables: Table[];
-    Enums: Enum[];
-    References: Reference[];
+    project: string;
+    databaseType: string;
+    note: string;
+    tables: Table[];
+    enums: Enum[];
+    references: Reference[];
 }
 
 export interface Table {
-    Name: string;
-    Alias: string;
-    Columns: Column[];
-    Note: string;
+    name: string;
+    alias: string;
+    columns: Column[];
+    note: string;
 }
 
 export interface Column {
-    Name: string;
-    Type: string;
-    Options: string[];
-    Default: string;
-    Note: string;
+    name: string;
+    type: string;
+    options: string[];
+    default: string;
+    note: string;
 }
 
 export interface Enum {
-    Name: string;
-    Items: string[];
+    name: string;
+    items: string[];
 }
 
 export interface Reference {
-    Name: string;
-    Type: ConnectionType;
-    Primary: ReferenceConnection;
-    Secondary: ReferenceConnection;
+    name: string;
+    type: ConnectionType;
+    primary: ReferenceConnection;
+    secondary: ReferenceConnection;
 }
 
 export interface ReferenceConnection {
-    Table: string;
-    Column: string;
+    table: string;
+    column: string;
 }
 
 export type ConnectionType = ">" | "<" | "-";

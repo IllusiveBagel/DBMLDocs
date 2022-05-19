@@ -20,22 +20,22 @@ import { Column, Reference } from "../../lib/Declarations";
 import { Table as MaterialTable } from "@mui/material";
 
 interface ITableProps {
-    Name: string;
-    Alias: string;
-    Columns: Column[];
-    Note: string;
-    References: Reference[];
+    name: string;
+    alias: string;
+    columns: Column[];
+    note: string;
+    references: Reference[];
 }
 
-const Table = (props: ITableProps) => {
+const Table = ({ name, alias, columns, note, references }: ITableProps) => {
     const [page, setPage] = useState<number>(0 as number);
     const [rowsPerPage, setRowsPerPage] = useState<number>(5 as number);
 
-    const HandleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+    const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
         setPage(newPage);
     };
 
-    const HandleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setPage(0);
         setRowsPerPage(parseInt(event.target.value, 10));
     };
@@ -44,25 +44,25 @@ const Table = (props: ITableProps) => {
         <>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    {props.Alias === undefined &&
+                    {alias === undefined &&
                         <Typography variant="h2">
-                            {props.Name}
+                            {name}
                         </Typography>
                     }
-                    {props.Alias !== undefined &&
+                    {alias !== undefined &&
                         <>
                             <Typography variant="h2">
-                                {props.Alias}
+                                {alias}
                             </Typography>
                             <Typography variant="subtitle1">
-                                Table Name: {props.Name}
+                                Table Name: {name}
                             </Typography>
                         </>
                     }
                 </Grid>
                 <Grid item xs={12}>
-                    <Paper className={styles.Note}>
-                        <ReactMarkdown remarkPlugins={[gfm]} children={props.Note} />
+                    <Paper className={styles.note}>
+                        <ReactMarkdown remarkPlugins={[gfm]} children={note} />
                     </Paper>
                 </Grid>
                 <Grid item xs={12}>
@@ -79,58 +79,58 @@ const Table = (props: ITableProps) => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {props.Columns.length !== 0 &&
-                                    props.Columns.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((column, index) => {
+                                {columns.length !== 0 &&
+                                    columns.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((column, index) => {
                                         return (
                                             <TableRow key={index}>
-                                                <TableCell align="center">{column.Name}</TableCell>
-                                                <TableCell align="center">{column.Type}</TableCell>
+                                                <TableCell align="center">{column.name}</TableCell>
+                                                <TableCell align="center">{column.type}</TableCell>
                                                 <TableCell align="center">
-                                                    {column.Options.map((option, index) => {
+                                                    {column.options.map((option, index) => {
                                                         if (option === "primary key") {
                                                             return (
-                                                                <Chip className={styles.Chip} color="secondary" icon={<VpnKeyIcon />} label="PK" size="small" key={index} />
+                                                                <Chip className={styles.chip} color="secondary" icon={<VpnKeyIcon />} label="PK" size="small" key={index} />
                                                             );
                                                         } else {
                                                             return (
-                                                                <Chip className={styles.Chip} label={option} size="small" key={index} />
+                                                                <Chip className={styles.chip} label={option} size="small" key={index} />
                                                             );
                                                         }
                                                     })}
                                                 </TableCell>
                                                 <TableCell align="center">
                                                     <Grid container direction="row">
-                                                        {props.References.map((ref, index) => {
-                                                            if (ref.Type === "-") {
+                                                        {references.map((ref, index) => {
+                                                            if (ref.type === "-") {
                                                                 return (
                                                                     <Grid container key={index}>
                                                                         <Grid item xs={2}>
-                                                                            <HeightIcon className={styles.OneToOne} />
+                                                                            <HeightIcon className={styles.oneToOne} />
                                                                         </Grid>
                                                                         <Grid item xs={8}>
-                                                                            <Typography>{`${ref.Secondary.Table}.${ref.Secondary.Column}`}</Typography>
+                                                                            <Typography>{`${ref.secondary.table}.${ref.secondary.column}`}</Typography>
                                                                         </Grid>
                                                                     </Grid>
                                                                 );
-                                                            } else if (ref.Primary.Table === props.Name && ref.Primary.Column === column.Name) {
+                                                            } else if (ref.primary.table === name && ref.primary.column === column.name) {
                                                                 return (
                                                                     <Grid container key={index}>
                                                                         <Grid item xs={2}>
-                                                                            <CallSplitIcon className={styles.GreaterThan} />
+                                                                            <CallSplitIcon className={styles.greaterThan} />
                                                                         </Grid>
                                                                         <Grid item xs={8}>
-                                                                            <Typography>{`${ref.Secondary.Table}.${ref.Secondary.Column}`}</Typography>
+                                                                            <Typography>{`${ref.secondary.table}.${ref.secondary.column}`}</Typography>
                                                                         </Grid>
                                                                     </Grid>
                                                                 );
-                                                            } else if (ref.Secondary.Table === props.Name && ref.Secondary.Column === column.Name) {
+                                                            } else if (ref.secondary.table === name && ref.secondary.column === column.name) {
                                                                 return (
                                                                     <Grid container key={index}>
                                                                         <Grid item xs={2}>
-                                                                            <CallSplitIcon className={styles.LessThan} />
+                                                                            <CallSplitIcon className={styles.lessThan} />
                                                                         </Grid>
                                                                         <Grid item xs={8}>
-                                                                            <Typography>{`${ref.Primary.Table}.${ref.Primary.Column}`}</Typography>
+                                                                            <Typography>{`${ref.primary.table}.${ref.primary.column}`}</Typography>
                                                                         </Grid>
                                                                     </Grid>
                                                                 );
@@ -141,12 +141,12 @@ const Table = (props: ITableProps) => {
                                                     </Grid>
 
                                                 </TableCell>
-                                                <TableCell align="center">{column.Default}</TableCell>
-                                                <TableCell align="center">{column.Note}</TableCell>
+                                                <TableCell align="center">{column.default}</TableCell>
+                                                <TableCell align="center">{column.note}</TableCell>
                                             </TableRow>
                                         );
                                     })}
-                                {props.Columns.length === 0 &&
+                                {columns.length === 0 &&
                                     <TableRow>
                                         <TableCell align="center" colSpan={6}>No Columns Found</TableCell>
                                     </TableRow>
@@ -156,11 +156,11 @@ const Table = (props: ITableProps) => {
                                 <TableRow>
                                     <TablePagination
                                         rowsPerPageOptions={[5, 10, 25]}
-                                        count={props.Columns.length}
+                                        count={columns.length}
                                         rowsPerPage={rowsPerPage}
                                         page={page}
-                                        onPageChange={HandleChangePage}
-                                        onRowsPerPageChange={HandleChangeRowsPerPage}
+                                        onPageChange={handleChangePage}
+                                        onRowsPerPageChange={handleChangeRowsPerPage}
                                     />
                                 </TableRow>
                             </TableFooter>

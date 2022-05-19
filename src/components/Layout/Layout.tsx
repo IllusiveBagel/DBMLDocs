@@ -8,11 +8,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { DBML } from "../../lib/Declarations";
 
 interface ILayoutProps {
-    Database: DBML;
+    database: DBML;
     children: React.ReactNode;
 }
 
-const Layout = (props: ILayoutProps) => {
+const Layout = ({ database, children }: ILayoutProps) => {
     const [darkMode, setDarkMode] = useState<boolean>(useMediaQuery('(prefers-color-scheme: dark)'));
 
     const theme = React.useMemo(
@@ -37,10 +37,10 @@ const Layout = (props: ILayoutProps) => {
         <ThemeProvider theme={theme}>
             <div className={styles.root}>
                 <CssBaseline />
-                <Navigation Database={props.Database} theme={darkMode} setTheme={setTheme} />
+                <Navigation database={database} theme={darkMode} setTheme={setTheme} />
                 <main className={styles.content}>
                     <Toolbar />
-                    {props.children}
+                    {children}
                 </main>
             </div>
         </ThemeProvider>
