@@ -5,6 +5,7 @@ import styles from "./Layout.module.css";
 import Toolbar from "@mui/material/Toolbar";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { darkTheme, lightTheme } from "../../theme";
 import { DBML } from "../../lib/Declarations";
 
 interface ILayoutProps {
@@ -17,12 +18,8 @@ const Layout = ({ database, children }: ILayoutProps) => {
 
     const theme = React.useMemo(
         () =>
-            createTheme({
-                palette: {
-                    mode: darkMode ? 'dark' : 'light',
-                },
-            }),
-        [darkMode],
+            createTheme(darkMode ? darkTheme : lightTheme),
+        [darkMode]
     );
 
     const setTheme = () => {

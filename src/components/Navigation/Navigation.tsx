@@ -54,7 +54,7 @@ const Navigation = ({ database, theme, setTheme }: INavigationProps) => {
 
     return (
         <>
-            <AppBar position="fixed" className={styles.appBar}>
+            <AppBar position="fixed" className={styles.appBar} color="primary">
                 <Toolbar
                     style={{
                         display: "flex",
