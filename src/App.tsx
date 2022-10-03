@@ -16,7 +16,7 @@ function App() {
   }, []);
 
   const getData = async () => {
-    const data = await fetch(`/Database/${config.DatabaseName}.dbml`)
+    const data = await fetch(`Database/${config.DatabaseName}.dbml`)
       .then((r) => r.text())
       .then(text => {
         return text.toString();

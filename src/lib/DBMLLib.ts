@@ -32,7 +32,7 @@ function Tables(tablesIN: any): Table[] {
     let tables: Table[] = [];
 
     tablesIN?.forEach((item: string) => {
-        const columnsIN = item.match(/(?<={\r\n)[^]+?(?=})/g)?.toString().replace(/ {2,}/g,' ').split('\r\n') as string[];
+        const columnsIN = item.match(/(?<={\n)[^]+?(?=})/g)?.toString().replace(/ {2,}/g,' ').split('\n') as string[];
         const columnsFiltered = columnsIN.filter(item => {
             return item !== "";
         });
